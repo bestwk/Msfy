@@ -1,10 +1,10 @@
 
 $(function() {
     validateRule();
-	$('.imgcode').click(function() {
-		var url = ctx + "captcha/captchaImage?type=" + captchaType + "&s=" + Math.random();
-		$(".imgcode").attr("src", url);
-	});
+    $('.imgcode').click(function() {
+        var url = ctx + "captcha/captchaImage?type=" + captchaType + "&s=" + Math.random();
+        $(".imgcode").attr("src", url);
+    });
 });
 
 $.validator.setDefaults({
@@ -17,7 +17,7 @@ function login() {
 	$.modal.loading($("#btnSubmit").data("loading"));
 	var username = $.common.trim($("input[name='username']").val());
     var password = $.common.trim($("input[name='password']").val());
-    var validateCode = $("input[name='validateCode']").val();
+   // var validateCode = $("input[name='validateCode']").val();
     var rememberMe = $("input[name='rememberme']").is(':checked');
     $.ajax({
         type: "post",
@@ -25,7 +25,7 @@ function login() {
         data: {
             "username": username,
             "password": password,
-            "validateCode" : validateCode,
+            //"validateCode" : validateCode,
             "rememberMe": rememberMe
         },
         success: function(r) {

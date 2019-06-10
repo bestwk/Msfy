@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.msfy.mapper.CustomerMapper">
+    
+    <resultMap type="Customer" id="CustomerResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="cardId"    column="card_id"    />
+        <result property="phone"    column="phone"    />
+        <result property="rechargeAmount"    column="recharge_amount"    />
+        <result property="type"    column="type"    />
+        <result property="cardTime"    column="card_time"    />
+        <result property="timeMoney"    column="time_money"    />
+        <result property="remark"    column="remark"    />
+
+    </resultMap>
+	
+	<sql id="selectCustomerVo">
+        select id, name, card_id, phone, recharge_amount, type, card_time, time_money, remark from ms_customer
+    </sql>
+	
+    <select id="selectCustomerList" parameterType="Customer" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="name != null  and name != '' "> and name like concat('%',#{name},'%') </if>
+             <if test="phone != null  and phone != '' "> and phone like concat('%',#{phone},'%')</if>
+         </where>
+        order by card_time desc
+    </select>
+    
+    <select id="selectCustomerById" parameterType="Integer" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCustomer" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
+        insert into ms_customer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="cardId != null  and cardId != ''  ">card_id,</if>
+			<if test="phone != null  and phone != ''  ">phone,</if>
+			<if test="rechargeAmount != null  ">recharge_amount,</if>
+			<if test="type != null  ">type,</if>
+			<if test="cardTime != null  ">card_time,</if>
+			<if test="timeMoney != null  ">time_money,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="cardId != null  and cardId != ''  ">#{cardId},</if>
+			<if test="phone != null  and phone != ''  ">#{phone},</if>
+			<if test="rechargeAmount != null  ">#{rechargeAmount},</if>
+			<if test="type != null  ">#{type},</if>
+			<if test="cardTime != null  ">#{cardTime},</if>
+			<if test="timeMoney != null  ">#{timeMoney},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateCustomer" parameterType="Customer">
+        update ms_customer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="cardId != null  and cardId != ''  ">card_id = #{cardId},</if>
+            <if test="phone != null  and phone != ''  ">phone = #{phone},</if>
+            <if test="rechargeAmount != null  ">recharge_amount = #{rechargeAmount},</if>
+            <if test="type != null  ">type = #{type},</if>
+            <if test="cardTime != null  ">card_time = #{cardTime},</if>
+            <if test="timeMoney != null  ">time_money = #{timeMoney},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteCustomerById" parameterType="Integer">
+        delete from ms_customer where id = #{id}
+    </delete>
+	
+    <delete id="deleteCustomerByIds" parameterType="String">
+        delete from ms_customer where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <insert id="importList" parameterType="java.util.List">
+        insert into ms_customer (name, card_id, phone, recharge_amount, type, card_time, time_money, remark)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name}, #{item.cardId},#{item.phone},#{item.rechargeAmount},#{item.type},#{item.cardTime},#{item.timeMoney},#{item.remark})
+        </foreach>
+    </insert>
+
+</mapper>

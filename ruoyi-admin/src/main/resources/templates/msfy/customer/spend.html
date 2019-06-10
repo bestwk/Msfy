@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('会员消费')" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-customer-spend" th:object="${customer}">
+        <input id="id" name="id" th:field="*{id}"  type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">姓名：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:field="*{name}" class="form-control" type="text" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">卡号：</label>
+            <div class="col-sm-8">
+                <input id="cardId" name="cardId" th:field="*{cardId}" class="form-control" type="text" disabled>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">剩余金额：</label>
+            <div class="col-sm-8">
+                <input id="timeMoney" name="timeMoney" th:field="*{timeMoney}" class="form-control" type="text" disabled>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">消费：</label>
+            <div class="col-sm-8">
+                <input id="spend" name="spend"  class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">消费内容：</label>
+            <div class="col-sm-8">
+            <label class="radio-inline">
+                <input type="radio" name="type"  id="type1" value="0"> 剪发
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="type"  id="type2" value="1"> 染发
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="type"  id="type3" value="2"> 洗头
+            </label>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "msfy/customer";
+    $(function () {
+        var customer = [[${customer}]]
+        $("#type1").prop('checked', true);
+    })
+
+    $("#form-customer-spend").validate({
+        rules:{
+            xxxx:{
+                required:true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+
+        $.modal.confirm($("#name").val()+"确定消费"+$("#spend").val()+"元吗?", function() {
+            if ($.validate.form()) {
+
+                var radio=document.getElementsByName("type");
+                var remark=null;   //  selectvalue为radio中选中的值
+                for( var i=0; i<radio.length; i++){
+                    if(radio[i].checked==true) {
+                        remark=radio[i].value;
+                        break;
+                    }
+                }
+
+                var a = $("#spend").val();
+                var b = $("#timeMoney").val();
+                console.log(a-b)
+                if(a - b > 0){
+                    $.modal.msgError("余额不足请充值");
+                    return;
+                }
+
+                $.ajax({
+                    type:"GET",
+                    url:prefix + "/spend" + "?id="+ $("#id").val() +"&spend=" + a+"&remark="+remark,
+                    datatype: "json",
+                    data:{},
+                    beforeSend: function () {
+                        $.modal.loading("正在处理中，请稍后...");
+                    },
+                    success:function (res) {
+                        $.operate.successCallback(res);
+                        console.log(res);
+                    }
+
+                });
+
+            }
+        })
+
+    }
+</script>
+</body>
+</html>

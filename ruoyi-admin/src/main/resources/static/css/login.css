@@ -3,12 +3,13 @@ html {
 }
 body.signin {
 	height:auto;
-	background:url(../img/login-background.jpg) no-repeat center fixed;
+	/*background:url(../img/login.jpg) no-repeat center fixed;*/
 	-webkit-background-size:cover;
 	-moz-background-size:cover;
 	-o-background-size:cover;
 	background-size:cover;
-	color:rgba(255,255,255,.95)
+	color:rgba(255,255,255,.95);
+	background: #00FF00 url(../img/login.jpg) no-repeat fixed top;
 }
 .signinpanel {
 	width:750px;

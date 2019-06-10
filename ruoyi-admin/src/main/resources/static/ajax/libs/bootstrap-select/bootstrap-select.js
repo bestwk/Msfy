@@ -1790,7 +1790,7 @@
         buttonClass = style;
       }
 
-      if (status == 'add') {
+      if (status == 'templates.msfy.customer.add') {
         if (buttonClass) button.classList.add.apply(button.classList, buttonClass.split(' '));
       } else if (status == 'remove') {
         if (buttonClass) button.classList.remove.apply(button.classList, buttonClass.split(' '));

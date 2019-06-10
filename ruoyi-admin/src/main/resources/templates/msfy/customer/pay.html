@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('会员续费')" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-customer-pay" th:object="${customer}">
+        <input id="id" name="id" th:field="*{id}"  type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">姓名：</label>
+            <div class="col-sm-8">
+                <input id="name" name="name" th:field="*{name}" class="form-control" type="text" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类型：</label>
+            <div class="col-sm-8">
+                <input id="type" name="type"  class="form-control" type="text" disabled>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">充值金额：</label>
+            <div class="col-sm-8">
+                <input id="rechargeAmount" name="rechargeAmount"  class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">次数/余额：</label>
+            <div class="col-sm-8">
+                <input id="timeMoney" name="timeMoney"  class="form-control" type="text" >
+            </div>
+        </div>
+
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "msfy/customer";
+    $(function () {
+        var customer = [[${customer}]]
+        if(customer.type == 0 ){
+            $("#type").val("次数卡")
+        }else{$("#type").val("金额卡")}
+    })
+
+    $("#form-customer-pay").validate({
+        rules:{
+            timeMoney:{
+                required:true,
+            },
+
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        $.modal.confirm($("#name").val()+"确定续卡吗?", function() {
+            if ($.validate.form()) {
+                var customer = [[${customer}]]
+                if(customer.type == 1 ){
+                    var a = $("#rechargeAmount").val()
+                    var b = $("#timeMoney").val()
+                    if( a != b){
+                        $.modal.msgError("保证余额与充值金额相等");
+                        return;
+                    }
+                }else if(customer.type == 0){
+                    var a = $("#rechargeAmount").val()
+                    var b = $("#timeMoney").val()
+                    if(b > 50){
+                        $.modal.msgError("办卡不可超过50次");
+                        return;
+                    }
+                }
+
+                $.ajax({
+                    type:"GET",
+                    url:prefix + "/pay" + "?id="+ $("#id").val() +"&rechargeAmount=" + a+"&timeMoney=" + b,
+                    datatype: "json",
+                    data:{},
+                    beforeSend: function () {
+                        $.modal.loading("正在处理中，请稍后...");
+                    },
+                    success:function (res) {
+                        $.operate.successCallback(res);
+                        console.log(res);
+                    }
+
+                });
+
+            }
+        })
+
+
+    }
+</script>
+</body>
+</html>

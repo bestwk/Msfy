@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增会员')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-customer-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">姓名：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">电话：</label>
+				<div class="col-sm-8">
+					<input id="phone" name="phone" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">充值金额：</label>
+				<div class="col-sm-8">
+					<input id="rechargeAmount" name="rechargeAmount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">充值卡类型：</label>
+				<div class="col-sm-8">
+					<label class="radio-inline">
+						<input type="radio" name="type" id="type1" value="0" > 次数卡
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="type" id="type2" value="1"> 金额卡
+					</label>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">剩余次数/剩余金额：</label>
+				<div class="col-sm-8">
+					<input id="timeMoney" name="timeMoney" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "msfy/customer"
+
+		window.onload = function(){
+			$("#type1").prop('checked', true);
+
+			var ddd = new Date();
+			var day =ddd.getDate();
+			if(ddd.getMonth()<10){
+				var month = "0"+(ddd.getMonth()+1);
+			}
+			if(ddd.getDate()<10){
+				day = "0"+ddd.getDate();
+			}
+			var datew = ddd.getFullYear()+"-"+month+"-"+day;
+
+			$("[name=cardTime]").val(datew);
+		}
+
+
+
+		$("#form-customer-add").validate({
+			rules:{
+				name:{
+					required:true,
+				},
+				phone:{
+					required:true,
+				},
+				rechargeAmount:{
+					required:true,
+				},
+				type:{
+					required:true,
+				},
+				timeMoney:{
+					required:true,
+				}
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+
+				var radio=document.getElementsByName("type");
+				var selectvalue=null;   //  selectvalue为radio中选中的值
+				for( var i=0; i<radio.length; i++){
+					if(radio[i].checked==true) {
+						selectvalue=radio[i].value;
+						break;
+					}
+				}
+console.log(selectvalue)
+				if(selectvalue == 1 ){
+					var a = $("#rechargeAmount").val()
+					var b = $("#timeMoney").val()
+					if( a != b){
+						$.modal.msgError("保证余额与充值金额相等");
+						return;
+					}
+				}else if(selectvalue == 0){
+					var a = $("#rechargeAmount").val()
+					var b = $("#timeMoney").val()
+					if(b > 50){
+						$.modal.msgError("办卡不可超过50次");
+						return;
+					}
+				}
+
+
+	            $.operate.save(prefix + "/add", $('#form-customer-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

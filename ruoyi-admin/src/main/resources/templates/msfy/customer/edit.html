@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改会员')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-customer-edit" th:object="${customer}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">姓名：</label>
+				<div class="col-sm-8">
+					<input id="name" name="name" th:field="*{name}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">卡号：</label>
+				<div class="col-sm-8">
+					<input id="cardId" name="cardId" th:field="*{cardId}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">电话：</label>
+				<div class="col-sm-8">
+					<input id="phone" name="phone" th:field="*{phone}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">充值金额：</label>
+				<div class="col-sm-8">
+					<input id="rechargeAmount" name="rechargeAmount" th:field="*{rechargeAmount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">充值卡类型：</label>
+				<div class="col-sm-8">
+					<label class="radio-inline">
+						<input type="radio" name="inlineRadioOptions" th:field="*{type}" id="inlineRadio1" value="0"> 次数卡
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="inlineRadioOptions" th:field="*{type}" id="inlineRadio2" value="1"> 金额卡
+					</label>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">剩余次数/金额：</label>
+				<div class="col-sm-8">
+					<input id="timeMoney" name="timeMoney" th:field="*{timeMoney}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text">
+				</div>
+			</div>
+
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script th:inline="javascript">
+		var prefix = ctx + "msfy/customer";
+		$(function () {
+			var customer = [[${customer}]]
+			/*$("#cardTime").prop(value,)*/
+		})
+
+		$("#form-customer-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-customer-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>
