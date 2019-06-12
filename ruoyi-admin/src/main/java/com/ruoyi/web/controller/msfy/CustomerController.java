@@ -171,7 +171,8 @@ public class CustomerController extends BaseController
 		switch(remark){
 			case 0:remak = "剪发";break;
 			case 1:remak = "染发";break;
-			case 2:remak = "洗头";break;
+			case 2:remak = "烫发";break;
+			case 3:remak = "洗头";break;
 		}
 		if(i > 0 ){
 			Record record = new Record();

@@ -99,7 +99,7 @@ public class CustomerServiceImpl implements ICustomerService
 		}
 		ArrayList<Customer> list1  = new ArrayList<>();
 		for (Customer customer : list) {
-			if(customer.getName() == ""){
+			if(customer.getName() == "" || customer.getName().isEmpty() || customer.getName() == null){
 				continue;
 			}
 			if( customer.getCardId() == null || customer.getCardId().length() == 0){
