@@ -160,11 +160,13 @@
 		/* 会员消费 */
 		function spend1(id,timeMoney) {
 			if(timeMoney < 1){
-				$.modal.msgError("次数不足请充值");
-				return;
-			}
+				$.modal.confirm("次数不足请尽快充值", function() {
+					var url = prefix + '/spend1/'+id;
+					$.modal.open("会员消费", url, '800', '400');
+				})
+			}else{
 			var url = prefix + '/spend1/'+id;
-			$.modal.open("会员消费", url, '800', '400');
+			$.modal.open("会员消费", url, '800', '400');}
 		}
 
         /* 会员消费 */

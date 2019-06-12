@@ -89,25 +89,39 @@
                 var b = $("#timeMoney").val();
                 console.log(a-b)
                 if(a - b > 0){
-                    $.modal.msgError("余额不足请充值");
-                    return;
+                    $.modal.confirm("余额不足请尽快充值", function() {
+                        $.ajax({
+                            type:"GET",
+                            url:prefix + "/spend" + "?id="+ $("#id").val() +"&spend=" + a+"&remark="+remark,
+                            datatype: "json",
+                            data:{},
+                            beforeSend: function () {
+                                $.modal.loading("正在处理中，请稍后...");
+                            },
+                            success:function (res) {
+                                $.operate.successCallback(res);
+                                console.log(res);
+                            }
+
+                        });
+                    })
+                }else {
+
+                    $.ajax({
+                        type: "GET",
+                        url: prefix + "/spend" + "?id=" + $("#id").val() + "&spend=" + a + "&remark=" + remark,
+                        datatype: "json",
+                        data: {},
+                        beforeSend: function () {
+                            $.modal.loading("正在处理中，请稍后...");
+                        },
+                        success: function (res) {
+                            $.operate.successCallback(res);
+                            console.log(res);
+                        }
+
+                    });
                 }
-
-                $.ajax({
-                    type:"GET",
-                    url:prefix + "/spend" + "?id="+ $("#id").val() +"&spend=" + a+"&remark="+remark,
-                    datatype: "json",
-                    data:{},
-                    beforeSend: function () {
-                        $.modal.loading("正在处理中，请稍后...");
-                    },
-                    success:function (res) {
-                        $.operate.successCallback(res);
-                        console.log(res);
-                    }
-
-                });
-
             }
         })
 

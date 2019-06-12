@@ -80,8 +80,7 @@
 
                 var b = $("#timeMoney").val();
                 if(b < 1){
-                    $.modal.msgError("次数不足请充值");
-                    return;
+                    $.modal.alert("次数不足请尽快充值")
                 }
 
                 $.ajax({
