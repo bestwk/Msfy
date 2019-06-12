@@ -31,9 +31,9 @@
 			</div>
 			
 	        <div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="msfy:record:add">
+			<!--	<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="msfy:record:add">
 					<i class="fa fa-plus"></i> 添加
-				</a>
+				</a>-->
 				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="msfy:record:edit">
 					<i class="fa fa-edit"></i> 修改
 				</a>
@@ -93,6 +93,11 @@
 				{
 					field : 'time', 
 					title : '消费时间',
+					sortable: true
+				},
+				{
+					field : 'timeMoney',
+					title : '剩余次数/金额',
 					sortable: true
 				},
 				{

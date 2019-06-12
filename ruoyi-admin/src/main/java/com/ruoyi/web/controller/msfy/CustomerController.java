@@ -185,6 +185,7 @@ public class CustomerController extends BaseController
 			}else{
 				record.setRemark("次卡消费一次"+"("+remak+")");
 			}
+			record.setTimeMoney(customer.getTimeMoney());
 			int i1 = recordService.insertRecord(record);
 
 			if(i1 > 0 ){

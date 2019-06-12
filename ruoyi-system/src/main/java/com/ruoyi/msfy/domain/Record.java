@@ -24,8 +24,19 @@ public class Record extends BaseEntity
 	private String phone;
 	/** 消费时间 */
 	private String time;
+	/** 剩余次数 */
+	private Integer timeMoney;
 	/**消费说明*/
 	private String remark;
+
+
+	public Integer getTimeMoney() {
+		return timeMoney;
+	}
+
+	public void setTimeMoney(Integer timeMoney) {
+		this.timeMoney = timeMoney;
+	}
 
 	@Override
 	public String getRemark() {
