@@ -14,7 +14,7 @@ ruoyi:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为80
-  port: 5188
+  port: 51888
   servlet:
     # 应用的访问路径
     context-path: /
