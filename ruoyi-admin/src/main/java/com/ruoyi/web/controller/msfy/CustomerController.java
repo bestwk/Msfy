@@ -155,7 +155,7 @@ public class CustomerController extends BaseController
 		mmap.put("customer", customerService.selectCustomerById(Id));
 		return prefix + "/spend1";
 	}
-	@Transactional
+	@Transactional(rollbackFor=Exception.class)
 	@RequiresPermissions("msfy:customer:spend")
 	@Log(title = "会员消费", businessType = BusinessType.UPDATE)
 	@GetMapping("/spend")
