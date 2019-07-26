@@ -92,18 +92,20 @@ public class CustomerController extends BaseController
 	@ResponseBody
 	public AjaxResult paySave(@RequestParam("id") Integer id,
 							  @RequestParam("rechargeAmount") Integer rechargeAmount,
-							  @RequestParam("timeMoney") Integer timeMoney)
+							  @RequestParam("timeMoney") Integer timeMoney,
+							  @RequestParam("remark") String remark)
 	{
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		AjaxResult ajaxResult = null;
 		Customer customer = customerService.selectCustomerById(id);
 		customer.setRechargeAmount(rechargeAmount);
+		customer.setCardTime(simpleDateFormat.format(new Date()));
 		customer.setTimeMoney(customer.getTimeMoney() + timeMoney);
+		customer.setRemark(remark);
 		int i = customerService.updateCustomer(customer);
 		if(i > 0 ){
 			Card card = new Card();
 			BeanUtils.copyBeanProp(card,customer);
-			card.setCardTime(simpleDateFormat.format(new Date()));
 			int i1 = cardService.insertCard(card);
 			if(i1 > 0 ){
 				ajaxResult = new AjaxResult(AjaxResult.Type.SUCCESS, "操作成功");
