@@ -81,8 +81,8 @@ public class CustomerController extends BaseController
 	public String lookDetail(@PathVariable("cardId") String cardId, ModelMap mmap)
 	{
 		Record record = new Record();
-		record.setCardId(cardId);
-		mmap.put("record", record);
+		//record.setCardId(cardId);
+		mmap.put("cardId", cardId);
 		return "msfy/record/record";
 	}
 	@Transactional
@@ -157,6 +157,8 @@ public class CustomerController extends BaseController
 		mmap.put("customer", customerService.selectCustomerById(Id));
 		return prefix + "/spend1";
 	}
+
+
 	@Transactional(rollbackFor=Exception.class)
 	@RequiresPermissions("msfy:customer:spend")
 	@Log(title = "会员消费", businessType = BusinessType.UPDATE)
@@ -164,7 +166,7 @@ public class CustomerController extends BaseController
 	@ResponseBody
 	public AjaxResult spendSave(@RequestParam("id") Integer id,@RequestParam("spend") Integer spend,@RequestParam("remark")Integer remark)
 	{
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		AjaxResult ajaxResult = null;
 		Customer customer = customerService.selectCustomerById(id);
 		customer.setTimeMoney(customer.getTimeMoney() - spend);
@@ -219,6 +221,7 @@ public class CustomerController extends BaseController
         ExcelUtil<Customer> util = new ExcelUtil<Customer>(Customer.class);
         return util.exportExcel(list, "customer");
     }
+
 
 	@PostMapping("/importData")
 	@ResponseBody

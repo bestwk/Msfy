@@ -154,7 +154,7 @@
         /* 会员消费 */
         function spend(id) {
             var url = prefix + '/spend/'+id;
-            $.modal.open("会员消费", url, '800', '400');
+            $.modal.openFull("会员消费", url, '800', '400');
         }
 
 		/* 会员消费 */
@@ -162,11 +162,11 @@
 			if(timeMoney < 1){
 				$.modal.confirm("次数不足请尽快充值", function() {
 					var url = prefix + '/spend1/'+id;
-					$.modal.open("会员消费", url, '800', '400');
+					$.modal.openFull("会员消费", url, '800', '400');
 				})
 			}else{
 			var url = prefix + '/spend1/'+id;
-			$.modal.open("会员消费", url, '800', '400');}
+			$.modal.openFull("会员消费", url, '800', '400');}
 		}
 
         /* 会员消费 */
