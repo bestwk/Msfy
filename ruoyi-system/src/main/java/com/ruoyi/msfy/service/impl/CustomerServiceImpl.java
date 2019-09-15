@@ -1,17 +1,21 @@
 package com.ruoyi.msfy.service.impl;
 
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.msfy.domain.Card;
 import com.ruoyi.msfy.domain.Customer;
+import com.ruoyi.msfy.domain.Record;
 import com.ruoyi.msfy.mapper.CardMapper;
 import com.ruoyi.msfy.mapper.CustomerMapper;
+import com.ruoyi.msfy.mapper.RecordMapper;
 import com.ruoyi.msfy.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +38,9 @@ public class CustomerServiceImpl implements ICustomerService
 
 	@Autowired
 	private CardMapper cardMapper;
+
+	@Autowired
+	private RecordMapper recordMapper;
 
 	/**
      * 查询会员信息
@@ -161,5 +168,56 @@ public class CustomerServiceImpl implements ICustomerService
 	{
 		return customerMapper.deleteCustomerByIds(Convert.toStrArray(ids));
 	}
-	
+	/**
+	 * 会员消费
+	 * @return 结果
+	 */
+	@Override
+	public int spendTime(Integer id, Integer spend) {
+		return customerMapper.spendTime(id,spend);
+	}
+
+	@Override
+	@Transactional(rollbackFor=Exception.class)
+	public AjaxResult xiaofei(Integer id, Integer spend, Integer remark) {
+		try {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			AjaxResult ajaxResult = null;
+			int i = customerMapper.spendTime(id,spend);
+//		if(i > 0 ){
+			String remak = "";
+			switch(remark){
+				case 0:remak = "剪发";break;
+				case 1:remak = "染发";break;
+				case 2:remak = "烫发";break;
+				case 3:remak = "洗头";break;
+			}
+			Customer customer = customerMapper.selectCustomerById(id);
+			Record record = new Record();
+			record.setCardId(customer.getCardId());
+			record.setName(customer.getName());
+			record.setPhone(customer.getPhone());
+			record.setTime(simpleDateFormat.format(new Date()));
+			if(spend > 1){
+				record.setRemark("金额卡消费"+spend+"元"+"("+remak+")");
+			}else{
+				record.setRemark("次卡消费一次"+"("+remak+")");
+			}
+			record.setTimeMoney(customer.getTimeMoney());
+			int i1 = recordMapper.insertRecord(record);
+
+			if(i1 > 0 && i > 0){
+				ajaxResult = new AjaxResult(AjaxResult.Type.SUCCESS, "操作成功");
+				ajaxResult.setCode(0);
+			}else{
+				ajaxResult = new AjaxResult(AjaxResult.Type.SUCCESS, "消费记录插入失败");
+				ajaxResult.setCode(500);
+			}
+			return ajaxResult;
+		} catch (Exception e) {
+			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return new AjaxResult(AjaxResult.Type.ERROR, "操作失败");
+		}
+	}
 }

@@ -1,6 +1,7 @@
 package com.ruoyi.msfy.service;
 
 
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.msfy.domain.Customer;
 
 import java.util.List;
@@ -60,4 +61,10 @@ public interface ICustomerService
 	 * @return 结果
 	 */
 	String importCustomer(List<Customer> list);
+	/**
+	 * 会员消费
+	 */
+	int spendTime(Integer id, Integer spend);
+
+	AjaxResult xiaofei(Integer id, Integer spend, Integer remark);
 }

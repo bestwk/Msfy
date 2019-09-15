@@ -85,7 +85,7 @@ public class CustomerController extends BaseController
 		mmap.put("cardId", cardId);
 		return "msfy/record/record";
 	}
-	@Transactional
+	@Transactional(rollbackFor=Exception.class)
 	@RequiresPermissions("msfy:customer:pay")
 	@Log(title = "会员续费", businessType = BusinessType.UPDATE)
 	@GetMapping("/pay")
@@ -159,53 +159,23 @@ public class CustomerController extends BaseController
 	}
 
 
-	@Transactional(rollbackFor=Exception.class)
+
 	@RequiresPermissions("msfy:customer:spend")
 	@Log(title = "会员消费", businessType = BusinessType.UPDATE)
 	@GetMapping("/spend")
 	@ResponseBody
 	public AjaxResult spendSave(@RequestParam("id") Integer id,@RequestParam("spend") Integer spend,@RequestParam("remark")Integer remark)
 	{
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		AjaxResult ajaxResult = null;
-		Customer customer = customerService.selectCustomerById(id);
-		customer.setTimeMoney(customer.getTimeMoney() - spend);
-		int i = customerService.updateCustomer(customer);
-		String remak = "";
-		switch(remark){
-			case 0:remak = "剪发";break;
-			case 1:remak = "染发";break;
-			case 2:remak = "烫发";break;
-			case 3:remak = "洗头";break;
-		}
-		if(i > 0 ){
-			Record record = new Record();
-			record.setCardId(customer.getCardId());
-			record.setName(customer.getName());
-			record.setPhone(customer.getPhone());
-			record.setTime(simpleDateFormat.format(new Date()));
-			if(spend > 1){
-				record.setRemark("金额卡消费"+spend+"元"+"("+remak+")");
-			}else{
-				record.setRemark("次卡消费一次"+"("+remak+")");
-			}
-			record.setTimeMoney(customer.getTimeMoney());
-			int i1 = recordService.insertRecord(record);
-
-			if(i1 > 0 ){
-				ajaxResult = new AjaxResult(AjaxResult.Type.SUCCESS, "操作成功");
-				ajaxResult.setCode(0);
-			}else{
-				ajaxResult = new AjaxResult(AjaxResult.Type.SUCCESS, "消费记录插入失败");
-				ajaxResult.setCode(500);
-			}
-
-		}else{
-		ajaxResult.setType(AjaxResult.Type.ERROR);
-		ajaxResult.setCode(500);
-		ajaxResult.setMsg("操作失败");
-		}
+		AjaxResult ajaxResult = customerService.xiaofei(id,spend,remark);
 		return ajaxResult;
+
+
+//		}else{
+//		ajaxResult.setType(AjaxResult.Type.ERROR);
+//		ajaxResult.setCode(500);
+//		ajaxResult.setMsg("操作失败");
+//		}
+
 	}
 	
 	

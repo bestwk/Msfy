@@ -95,4 +95,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+    <update id="spendTime" >
+        update ms_customer
+        set time_money = time_money - #{spend}
+        where id = #{id}
+    </update>
+
 </mapper>

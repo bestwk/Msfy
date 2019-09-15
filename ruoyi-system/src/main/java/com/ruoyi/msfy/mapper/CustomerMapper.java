@@ -1,6 +1,8 @@
 package com.ruoyi.msfy.mapper;
 
 import com.ruoyi.msfy.domain.Customer;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;	
 
 /**
@@ -60,4 +62,6 @@ public interface CustomerMapper
 	public int deleteCustomerByIds(String[] ids);
 
     int importList(List<Customer> list);
+
+	int spendTime(@Param("id")Integer id,@Param("spend") Integer spend);
 }
