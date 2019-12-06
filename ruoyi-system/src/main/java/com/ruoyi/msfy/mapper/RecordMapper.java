@@ -1,5 +1,6 @@
 package com.ruoyi.msfy.mapper;
 
+import com.ruoyi.msfy.domain.EchartsVo;
 import com.ruoyi.msfy.domain.Record;
 import java.util.List;	
 
@@ -58,5 +59,8 @@ public interface RecordMapper
      * @return 结果
      */
 	public int deleteRecordByIds(String[] ids);
-	
+
+	List<EchartsVo> getDayPie();
+
+    List<EchartsVo> getMouthPie();
 }

@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="cardId"    column="card_id"    />
         <result property="phone"    column="phone"    />
         <result property="time"    column="time"    />
+        <result property="type"    column="type"    />
         <result property="timeMoney"    column="time_money"    />
         <result property="remark"    column="remark"    />
     </resultMap>
@@ -41,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="cardId != null  ">card_id,</if>
 			<if test="phone != null  and phone != ''  ">phone,</if>
 			<if test="time != null  ">time,</if>
+			<if test="type != null  ">type,</if>
 			<if test="timeMoney != null  ">time_money,</if>
 			<if test="remark != null  and remark != ''  ">remark,</if>
          </trim>
@@ -50,6 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="cardId != null  ">#{cardId},</if>
 			<if test="phone != null  and phone != ''  ">#{phone},</if>
 			<if test="time != null  ">#{time},</if>
+			<if test="type != null  ">#{type},</if>
 			<if test="timeMoney != null  ">#{timeMoney},</if>
 			<if test="remark != null  and remark != ''  ">#{remark},</if>
          </trim>
@@ -78,5 +81,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    <select id="getDayPie" resultType="com.ruoyi.msfy.domain.EchartsVo">
+    SELECT
+        count(*) AS value,
+        type AS name
+        FROM
+        ms_record
+    WHERE
+	TO_DAYS(time) = TO_DAYS(now()) GROUP BY type
+    </select>
+    <select id="getMouthPie" resultType="com.ruoyi.msfy.domain.EchartsVo" >
+    SELECT
+        count(*) AS value,
+        type AS name
+        FROM
+        ms_record
+    WHERE DATE_FORMAT( time, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' ) GROUP BY type
+    </select>
     
 </mapper>

@@ -1,6 +1,7 @@
 package com.ruoyi.msfy.service;
 
 
+import com.ruoyi.msfy.domain.EchartsVo;
 import com.ruoyi.msfy.domain.Record;
 
 import java.util.List;
@@ -52,5 +53,14 @@ public interface IRecordService
      * @return 结果
      */
 	public int deleteRecordByIds(String ids);
-	
+	/**
+	 * @Author wk on 2019/12/6
+	 * @Description 获取今日消费饼图
+	 */
+    List<EchartsVo> getDayPie();
+	/**
+	 * @Author wk on 2019/12/6
+	 * @Description 获取当月消费饼图
+	 */
+	List<EchartsVo> getMouthPie();
 }

@@ -1,6 +1,7 @@
 package com.ruoyi.msfy.service.impl;
 
 import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.msfy.domain.EchartsVo;
 import com.ruoyi.msfy.domain.Record;
 import com.ruoyi.msfy.mapper.RecordMapper;
 import com.ruoyi.msfy.service.IRecordService;
@@ -71,7 +72,6 @@ public class RecordServiceImpl implements IRecordService
 
 	/**
      * 删除消费记录对象
-     * 
      * @param ids 需要删除的数据ID
      * @return 结果
      */
@@ -80,5 +80,14 @@ public class RecordServiceImpl implements IRecordService
 	{
 		return recordMapper.deleteRecordByIds(Convert.toStrArray(ids));
 	}
-	
+
+	@Override
+	public List<EchartsVo> getDayPie() {
+		return recordMapper.getDayPie();
+	}
+
+	@Override
+	public List<EchartsVo> getMouthPie() {
+		return recordMapper.getMouthPie();
+	}
 }

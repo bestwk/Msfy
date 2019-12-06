@@ -24,11 +24,20 @@ public class Record extends BaseEntity
 	private String phone;
 	/** 消费时间 */
 	private String time;
+	/** 消费类型 */
+	private String type;
 	/** 剩余次数 */
 	private Integer timeMoney;
 	/**消费说明*/
 	private String remark;
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public Integer getTimeMoney() {
 		return timeMoney;

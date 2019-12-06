@@ -197,6 +197,7 @@ public class CustomerServiceImpl implements ICustomerService
 			record.setCardId(customer.getCardId());
 			record.setName(customer.getName());
 			record.setPhone(customer.getPhone());
+			record.setType(remak);
 			record.setTime(simpleDateFormat.format(new Date()));
 			if(spend > 1){
 				record.setRemark("金额卡消费"+spend+"元"+"("+remak+")");
